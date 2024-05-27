@@ -1,0 +1,325 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:uc="clr-namespace:WpfApp1.userControls"
+        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Height="760" Width="1280" AllowsTransparency="True" WindowStyle="None" Background="Transparent" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <Style TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+    </Window.Resources>
+
+
+
+    <Border CornerRadius="25" Background="#151f2d" MouseDown="Border_MouseDown">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="100"/>
+                <ColumnDefinition  Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.RowSpan="3" Background="#1e2e44" CornerRadius="25 0 0 25">
+                <Grid>
+                    <StackPanel VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 30 0 40">
+                            <Ellipse Width="8" Height="8" Fill="#eb1700"/>
+                            <Ellipse Width="8" Height="8" Fill="#ffaf01" Margin="7 0"/>
+                            <Ellipse Width="8" Height="8" Fill="#009d00"/>
+                        </StackPanel>
+                        <uc:menubutton Icon="HomeVariant" IsActive="True"/>
+                        <uc:menubutton Icon="CommentMultipleOutline" />
+                        <uc:menubutton Icon="AlertCircleOutline" />
+                        <uc:menubutton Icon="CogOutline"/>
+                    </StackPanel>
+                    <Button Margin="0,676,0,22" Background="Transparent" Click="Power_Click" Style="{StaticResource menuButton}">
+                        <Grid ClipToBounds ="True">
+                            <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Visibility" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Button}}}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=menuButton, Path=isActive}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <uc:menubutton Icon="Power" VerticalAlignment="Top" Width="93" Height="53" Margin="4,-13,4,0"/>
+                        </Grid>
+                    </Button>
+                    <TextBlock Text="Designed By Fujiwara" FontSize="37" 
+                               Foreground="White" FontFamily="Fonts/#Comforter" Height="62" TextAlignment="Center" Margin="-92,463,-109,0" VerticalAlignment="Top" TextWrapping="Wrap" RenderTransformOrigin="0.5,0.5">
+
+                        <TextBlock.RenderTransform>
+                            <RotateTransform Angle="270"/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Grid>
+            </Border>
+
+
+            <!--top menu-->
+            <Grid Grid.Column="1" Margin="30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <!--search-->
+                <Grid>
+                    <TextBlock Margin="40 0 15 0" VerticalAlignment="Center" Foreground="#9ea4ad" Panel.ZIndex="1"
+                               IsHitTestVisible="False" Text="Seartch here..."
+                               Visibility="{Binding ElementName=textBox, Path=Text, Converter={StaticResource BoolToVis}}"/>
+                    <TextBox x:Name="textBox" Style="{StaticResource searchTextBox}"/>
+                    <Icon:PackIconMaterial Kind="Magnify" Width="32" Foreground="#9ea4ad" Margin="10,0,0,0" Height="26" VerticalAlignment="Center"/>
+
+                </Grid>
+                <!--buttons-->
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="20 0 0 0">
+                    <Button Style="{StaticResource topMenuButton}">
+                        <Icon:PackIconMaterial Kind="Bell" Style="{StaticResource topMenuButtonIcon}"/>
+                    </Button>
+                    <Button Style="{StaticResource topMenuButton}">
+                        <Icon:PackIconMaterial Kind="Bookmark" Style="{StaticResource topMenuButtonIcon}"/>
+                    </Button>
+                    <Button Style="{StaticResource topMenuButton}" Background="#1e2e44">
+                        <Icon:PackIconMaterial Kind="Account" Style="{StaticResource topMenuButtonIcon}"/>
+                    </Button>
+                </StackPanel>
+
+
+            </Grid>
+
+            <!--middle to psections-->
+
+            <Grid Grid.Row="1" Grid.Column="1" Margin="70 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--info cards left-->
+                <StackPanel>
+                    <uc:InfoCard  Title="Information about R O M"  FontFamily="/Fonts/#Rubik" IsTechnical="True" IsActive="False" Height="145"/>
+                    <uc:UCRight   Title="Information about R A M"  FontFamily="/Fonts/#Rubik" IsTechnical="True" IsActive="False" Margin="0 0 10 0" Height="145" />
+                </StackPanel>
+                <!--info card rigjt-->
+                <StackPanel Grid.Column="1">
+                    <uc:UCCPU Title="Information about C P U"  FontFamily="/Fonts/#Rubik" IsTechnical="True" IsActive="False" Margin="10 0 0 0" Height="145"/>
+                    <uc:UCGPU  Title="Information about G P U"  FontFamily="/Fonts/#Rubik"  IsTechnical="True" IsActive="False" Margin="10 0 0 0" Height="145" />
+                </StackPanel>
+                <!--gpu cpu info -->
+                <Border Grid.Column="3" Style="{StaticResource mainBorder}" Margin="10 0 10 21.5">
+                    <Grid>
+                        <TextBlock Text="OS and Motherboard info: " Style="{StaticResource titleText}"  FontFamily="/Fonts/#Rubik"/>
+
+                        <!--filter-->
+                        <Button Style="{StaticResource titleButton}" Margin="0 -3 0 0">
+                            <Icon:PackIconMaterial Kind="Tune" Style="{StaticResource topMenuButtonIcon}"/>
+                        </Button>
+                        <!--legends-->
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 45 0 0">
+                            <Border Width="12" Height="12" Background="#7166f9" CornerRadius="3"/>
+                            <TextBlock Text="OS" VerticalAlignment="Center"  FontFamily="/Fonts/#Rubik" Margin="7 0 20 0" Foreground="#d4d6d9"/>
+
+                            <Border Width="12" Height="12" Background="Red" CornerRadius="3"/>
+                            <TextBlock Text="MotherBoard" VerticalAlignment="Center"  FontFamily="/Fonts/#Rubik" Margin="7 0 20 0" Foreground="#d4d6d9"/>
+                        </StackPanel>
+                        <!--cost chart-->
+
+                        <!-- TextBoxes for GPU and CPU specs -->
+                        <StackPanel>
+                            <Border Margin=" 10 90 10 10" Height="61">
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource mainBorder}">
+                                        <Setter Property="BorderThickness" Value="1.5"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="BorderBrush" Value="#7166f9"/>
+                                            </Trigger>
+
+                                            <DataTrigger Binding="{Binding ElementName=infoCard, Path=IsActive}" Value="True">
+                                                <Setter Property="BorderBrush" Value="#7166f9"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+
+                                    <TextBlock Text="{Binding PCInfo.OSInfo  }" Background="Transparent"  Foreground="#d4d6d9"/>
+                                </Grid>
+
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Margin="0 60 0 0">
+                            <Border Margin=" 10 100 10 10" Height="61">
+                                <Border.Style>
+                                    <Style TargetType="Border" BasedOn="{StaticResource mainBorder}">
+                                        <Setter Property="BorderThickness" Value="1.5"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="BorderBrush" Value="Red"/>
+                                            </Trigger>
+
+                                            <DataTrigger Binding="{Binding ElementName=infoCard, Path=IsActive}" Value="True">
+                                                <Setter Property="BorderBrush" Value="Red"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+
+                                    <TextBlock Text="{Binding PCInfo.MotherboardInfo}" Background="Transparent"  Foreground="#d4d6d9"/>
+                                </Grid>
+
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+            <!--middle bottom-->
+            <Grid Grid.Row="2" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="450"/>
+                </Grid.ColumnDefinitions>
+                <!--hire sec-->
+                <Border Style="{StaticResource mainBorder}" Margin="30,0,45,30" Grid.ColumnSpan="2">
+                    <Grid>
+                        <!--title-->
+                        <TextBlock Text="More info."  FontFamily="/Fonts/#Rubik" Style="{StaticResource titleText}"/>
+                        <!--filter-->
+                        <Button Style="{StaticResource titleButton}" >
+                            <Icon:PackIconMaterial Kind="Tune" Style="{StaticResource topMenuButtonIcon}"/>
+                        </Button>
+
+                        <!--hire chart-->
+
+                        <TextBlock Text="Total Disk Space:"  FontFamily="/Fonts/#Rubik" Margin="0,39,933,232"  Foreground="#7166f9"/>
+                        <ProgressBar x:Name="progressBarTotal" Margin="0,60,867,207" Background="Transparent"/>
+                        <TextBlock x:Name="textBlockTotal"  VerticalAlignment="Top" Margin="0,90,897,0" Foreground="White" Height="20"/>
+                        <TextBlock Text="Free Disk Space:"  FontFamily="/Fonts/#Rubik" Margin="0,115,933,154"  Foreground="#7166f9"/>
+                        <ProgressBar x:Name="progressBarFree" Margin="0,144,867,120" Background="Transparent"/>
+                        <TextBlock x:Name="textBlockFree" VerticalAlignment="Top" Margin="0,177,933,0" Foreground="White" Height="16"/>
+                        <TextBlock Text="Used Disk Space:"  FontFamily="/Fonts/#Rubik" Margin="0,197,882,68"  Foreground="#7166f9" RenderTransformOrigin="0.5,0.5" >
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="0.219"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <ProgressBar x:Name="progressBarUsed" Margin="0,239,867,30" Background="Transparent"/>
+                        <TextBlock x:Name="textBlockUsed"  VerticalAlignment="Top" Margin="0,267,897,0" Foreground="White" Height="15"/>
+
+                        <TextBlock Text="Total RAM Space:"  FontFamily="/Fonts/#Rubik" Margin="260,39,673,234"  Foreground="#7166f9"/>
+                        <ProgressBar x:Name="totalProgressBar" Margin="260,60,572,207" Background="Transparent"/>
+                        <TextBlock x:Name="totalLabel"  VerticalAlignment="Top" Margin="260,85,637,0" Foreground="White" Height="25"/>
+                        <TextBlock Text="Free RAM Space:"  FontFamily="/Fonts/#Rubik" Margin="260,115,673,154"  Foreground="#7166f9"/>
+                        <ProgressBar x:Name="freeProgressBar" Margin="260,144,572,120" Background="Transparent"/>
+                        <TextBlock x:Name="freeLabel" VerticalAlignment="Top" Margin="260,177,673,0" Foreground="White" Height="25"/>
+                        <TextBlock Text="Used RAM Space:"  FontFamily="/Fonts/#Rubik" Margin="262,207,620,58"  Foreground="#7166f9" RenderTransformOrigin="0.5,0.5" >
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="0.219"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <ProgressBar x:Name="usedProgressBar" Margin="260,239,572,30" Background="Transparent"/>
+
+                        <TextBlock x:Name="usedLabel"  VerticalAlignment="Top" Margin="260,264,637,0" Foreground="White" Height="28"/>
+                        <Border Margin="532,55,73,166">
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource mainBorder}">
+                                    <Setter Property="BorderThickness" Value="1.5"/>
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="BorderBrush" Value="#7166f9"/>
+                                        </Trigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=infoCard, Path=IsActive}" Value="True">
+                                            <Setter Property="BorderBrush" Value="#7166f9"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid Margin="-22,-22,-22,-22">
+
+                                <TextBlock Text="Processor Temperature"  FontFamily="/Fonts/#Rubik" Margin="0,1,302,41"  Foreground="#7166f9" TextAlignment="Center" >
+
+                                </TextBlock>
+                                <TextBlock Text="Processor Power Usage"  FontFamily="/Fonts/#Rubik" Margin="230,0,63,41"  Foreground="#7166f9" TextAlignment="Center"/>
+                                <Label x:Name="lblTemperature" FontSize="16" Margin="0,21,236,0" Foreground="White" RenderTransformOrigin="0.5,0.5">
+                                    <Label.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform AngleX="0.694"/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="0.255"/>
+                                        </TransformGroup>
+                                    </Label.RenderTransform>
+                                </Label>
+                                <Label x:Name="lblPowerUsage" FontSize="16" Margin="231,21,10,0" Foreground="White"/>
+                            </Grid>
+
+                        </Border>
+
+
+                        <Border Margin="532,170,73,42">
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource mainBorder}">
+                                    <Setter Property="BorderThickness" Value="1.5"/>
+                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="BorderBrush" Value="#7166f9"/>
+                                        </Trigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=infoCard, Path=IsActive}" Value="True">
+                                            <Setter Property="BorderBrush" Value="#7166f9"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid Margin="-22,-22,-22,-28">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="156*"/>
+                                    <ColumnDefinition Width="305*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="GPU Temperature"  FontFamily="/Fonts/#Rubik" Margin="10,10,42,36"  Foreground="#7166f9"/>
+                                <TextBlock Text="GPU Power Usage"  FontFamily="/Fonts/#Rubik" Margin="97,10,99,39"  Foreground="#7166f9" Grid.Column="1"/>
+                                <Label x:Name="lblGpuTemperature" FontSize="16" Margin="10,28,261,10" Foreground="White" Grid.ColumnSpan="2"/>
+                                <Label x:Name="lblGpuUtilization" FontSize="16" Margin="97,28,0,0" Foreground="White" Grid.Column="1"/>
+                            </Grid>
+
+                        </Border>
+
+                    </Grid>
+                </Border>
+
+            </Grid>
+
+        </Grid>
+    </Border>
+</Window>
