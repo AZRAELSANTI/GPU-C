@@ -8,4 +8,5 @@ https://icons8.com/icons/set/dashboard
 
 https://fontawesome.com/
 
-![image](https://github.com/AZRAELSANTI/Speccy-Project/assets/83638372/734bbad0-d226-4574-8ad8-21fd41a33414)
+![image](https://github.com/AZRAELSANTI/Speccy-Project/assets/83638372/3a00517a-f82a-49a9-af33-3cc55887ef79)
+
