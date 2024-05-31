@@ -19,8 +19,7 @@ namespace WpfApp1.ViewModel
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
             foreach (ManagementObject obj in searcher.Get())
             {
-                CpuInfo = $"{obj["Name"]} " +
-                    $"{obj["NumberOfCores"]} ";
+                CpuInfo = $"{obj["Name"]} ";
                    
 
             }
@@ -28,8 +27,7 @@ namespace WpfApp1.ViewModel
             searcher = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController");
             foreach (ManagementObject obj in searcher.Get())
             {
-                GpuInfo = $"{obj["Name"]} " +
-                    $"{ConvertBytesToGB(obj["AdapterRAM"])} GB\n";
+                GpuInfo = $"{obj["Name"]} " ;
             }
         }
 

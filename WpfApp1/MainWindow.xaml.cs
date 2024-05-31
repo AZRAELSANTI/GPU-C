@@ -118,7 +118,7 @@ namespace WpfApp1
             string gpuTemperature = gpuInfo.GetGpuTemperature();
             int gpuUtilization = gpuInfo.GetGpuUtilization();
 
-            lblGpuTemperature.Content =  gpuTemperature;
+            lblGpuTemperature.Content = "GPU Temperature: " + gpuTemperature;
             lblGpuUtilization.Content = "GPU Utilization: " + gpuUtilization + "%";
         }
     }

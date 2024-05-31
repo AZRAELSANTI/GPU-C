@@ -17,7 +17,9 @@ namespace WpfApp1.ViewModel
         {
             Computer computer = new Computer();
             computer.Open();
+            computer.IsGpuEnabled = true;
             var gpu = computer.Hardware.FirstOrDefault(h => h.HardwareType == HardwareType.GpuNvidia || h.HardwareType == HardwareType.GpuAmd || h.HardwareType == HardwareType.GpuIntel);
+
             if (gpu != null && gpu.Sensors.Length > 0)
             {
                 var temperatureSensor = gpu.Sensors.FirstOrDefault(s => s.SensorType == SensorType.Temperature);
@@ -31,7 +33,7 @@ namespace WpfApp1.ViewModel
 
             return "Temperature information not available";
         }
-    
+
 
         public int GetGpuUtilization()
         {
