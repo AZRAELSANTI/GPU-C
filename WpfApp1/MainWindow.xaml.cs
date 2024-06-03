@@ -121,9 +121,14 @@ namespace WpfApp1
             lblGpuTemperature.Content = "GPU Temperature: " + gpuTemperature;
             lblGpuUtilization.Content = "GPU Utilization: " + gpuUtilization + "%";
         }
-    }
 
+
+
+
+    }
 }
+
+
 
     
 

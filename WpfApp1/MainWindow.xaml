@@ -210,7 +210,11 @@
                         <!--hire chart-->
 
                         <TextBlock Text="Total Disk Space:"  FontFamily="/Fonts/#Rubik" Margin="0,39,933,232"  Foreground="#7166f9"/>
-                        <ProgressBar x:Name="progressBarTotal" Margin="0,60,867,207" Background="Transparent"/>
+
+                        <ProgressBar x:Name="progressBarTotal" Margin="0,60,867,207" Background="Transparent" >
+                            
+                        </ProgressBar>
+
                         <TextBlock x:Name="textBlockTotal"  VerticalAlignment="Top" Margin="0,90,897,0" Foreground="White" Height="20"/>
                         <TextBlock Text="Free Disk Space:"  FontFamily="/Fonts/#Rubik" Margin="0,115,933,154"  Foreground="#7166f9"/>
                         <ProgressBar x:Name="progressBarFree" Margin="0,144,867,120" Background="Transparent"/>
