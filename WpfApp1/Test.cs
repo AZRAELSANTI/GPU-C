@@ -42,8 +42,7 @@ namespace WpfApp1
             RunGPUStressTest();
             RunRAMStressTest();
             SaveResultsToWord();
-            Test test = new Test();
-            test.RunAllStressTests();
+
         }
 
         public void RunCPUSressTest()
@@ -124,11 +123,10 @@ namespace WpfApp1
 
         private void MeasureTemperature()
         {
-            // Дополнительный код для измерения температуры CPU, GPU и других компонентов
-            // Можете добавить здесь код для измерения температуры
+
         }
 
-       
+
 
 
         private void SaveResultsToWord()
@@ -137,17 +135,20 @@ namespace WpfApp1
             string filePath = Path.Combine(desktopPath, "StressTestResults.docx");
 
             object fileName = filePath;
-            object missing = System.Reflection.Missing.Value;
 
-            // Записываем результаты в документ Word
+
             doc.Content.Text += "Результаты стресс-тестирования:\n\n";
             doc.Content.Text += $"Температура процессора: {cpuTemperature} °C\n";
+            doc.Content.Text += $"Загрузка процессора: {cpuLoad} %\n";
+            doc.Content.Text += $"Загрузка GPU: {gpuLoad} %\n";
+            doc.Content.Text += $"Частота работы GPU: {gpuClockSpeed} MHz\n";
+            doc.Content.Text += $"Загрузка оперативной памяти: {ramLoad}%\n";
 
-            doc.SaveAs2(ref fileName, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
+            doc.SaveAs(filePath);
             doc.Close();
             wordApp.Quit();
 
-            Console.WriteLine("Результаты стресс-тестирования успешно записаны в документ Word на рабочем столе.");
         }
+
     }
 }

@@ -20,13 +20,13 @@ namespace WpfApp1
             foreach (ManagementObject gpu in gpuCollection)
             {
                 systemInfo.AppendLine($"GPU: {gpu["Name"]}");
-                // Преобразование байт в ГБ
+
                 long videoMemoryBytes = long.Parse(gpu["AdapterRAM"].ToString());
                 double videoMemoryGB = videoMemoryBytes / 1024.0 / 1024.0 / 1024.0;
-                systemInfo.AppendLine($"Video memory: {videoMemoryGB:F2} GB"); // Форматирование с двумя знаками после запятой
+                systemInfo.AppendLine($"Video memory: {videoMemoryGB:F2} GB");
             }
 
-            // Get CPU information
+
             ManagementObjectSearcher cpuSearcher = new ManagementObjectSearcher("select * from Win32_Processor");
             ManagementObjectCollection cpuCollection = cpuSearcher.Get();
             foreach (ManagementObject cpu in cpuCollection)
@@ -37,17 +37,17 @@ namespace WpfApp1
                 systemInfo.AppendLine($"Load: {cpu["LoadPercentage"]}%");
             }
 
-            // Get RAM information
+
             ManagementObjectSearcher ramSearcher = new ManagementObjectSearcher("select * from Win32_PhysicalMemory");
             ManagementObjectCollection ramCollection = ramSearcher.Get();
-            long totalRam = 0; // Суммируем общий объем RAM
+            long totalRam = 0; // Суммируем общий объем оперативы
             foreach (ManagementObject ram in ramCollection)
             {
                 totalRam += long.Parse(ram["Capacity"].ToString());
             }
             systemInfo.AppendLine($"RAM: {totalRam / 1024 / 1024 / 1024:F2} GB"); // Вывод в ГБ
 
-            // Get hard disk information
+
             ManagementObjectSearcher hardDiskSearcher = new ManagementObjectSearcher("select * from Win32_DiskDrive");
             ManagementObjectCollection hardDiskCollection = hardDiskSearcher.Get();
             foreach (ManagementObject hardDisk in hardDiskCollection)
@@ -65,7 +65,6 @@ namespace WpfApp1
                 systemInfo.AppendLine($"Total space: {totalSpaceGB:F2} GB");
             }
 
-            // Get operating system information
             ManagementObjectSearcher osSearcher = new ManagementObjectSearcher("select * from Win32_OperatingSystem");
             ManagementObjectCollection osCollection = osSearcher.Get();
             foreach (ManagementObject os in osCollection)
@@ -75,12 +74,11 @@ namespace WpfApp1
 
             return systemInfo.ToString();
 
-          
 
-              
-            }
+
+
         }
     }
+}
 
 
-    

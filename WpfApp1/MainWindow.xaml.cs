@@ -1,6 +1,4 @@
-﻿
-
-using OpenHardwareMonitor.Hardware;
+﻿using OpenHardwareMonitor.Hardware;
 using Microsoft.Office.Interop.Word;
 using System;
 using System.IO;
@@ -20,7 +18,7 @@ namespace WpfApp1
     {
         private Application wordApp;
         private Document doc;
-        private Test stressTest;
+        private Test test;
         public PCInfoViewModel PCInfo { get; set; }
 
         public MainWindow()
@@ -37,7 +35,7 @@ namespace WpfApp1
             UpdateProcessorInfo();
             UpdateGpuInfo();
             DataContext = this;
-            stressTest = new Test();
+            test = new Test();
 
         }
 
@@ -71,13 +69,14 @@ namespace WpfApp1
             wordApp.Quit();
 
             // Show a message to the user
-            MessageBox.Show("System information successfully saved to Word file.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Информация о ПК была успешно записана в документ Word", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-            stressTest.RunAllStressTests();
-            MessageBox.Show("Stress tests completed successfully!");
+            test.RunAllStressTests();
+
+            MessageBox.Show("Стресс тест успешно завершен!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
 
@@ -124,7 +123,7 @@ namespace WpfApp1
             usedProgressBar.Value = (usedMemoryGB / totalMemoryGB) * 100;
             freeProgressBar.Value = (freeMemoryGB / totalMemoryGB) * 100;
 
-            // Update text blocks to display memory information in GB
+
             totalLabel.Text = $" {totalMemoryGB:F2} GB";
             usedLabel.Text = $" {usedMemoryGB:F2} GB";
             freeLabel.Text = $" {freeMemoryGB:F2} GB";
@@ -151,13 +150,10 @@ namespace WpfApp1
             lblGpuUtilization.Content = "GPU Utilization: " + gpuUtilization + "%";
         }
 
-
-
-      
     }
 }
 
 
 
-    
+
 
