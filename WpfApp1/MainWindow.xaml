@@ -41,7 +41,7 @@
                        
                         <uc:menubutton Icon="CogOutline"/>
                     </StackPanel>
-                    <Button Margin="0,-260,0,22" Background="Transparent" Click="Test_Click" Style="{StaticResource menuButton}">
+                    <Button Margin="0,-260,0,22" Background="Transparent" Click="Info_Click" Style="{StaticResource menuButton}">
                         <Grid ClipToBounds ="True">
                             <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
                                 <Ellipse.Style>
@@ -56,6 +56,23 @@
                                 </Ellipse.Style>
                             </Ellipse>
                             <uc:menubutton Icon="Memory" VerticalAlignment="Top" Width="93" Height="53" Margin="4,-13,4,0"/>
+                        </Grid>
+                    </Button>
+                    <Button Margin="0,-140,0,22" Background="Transparent" Click="Test_Click" Style="{StaticResource menuButton}">
+                        <Grid ClipToBounds ="True">
+                            <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Visibility" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Button}}}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=menuButton, Path=isActive}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <uc:menubutton Icon="Information" VerticalAlignment="Top" Width="93" Height="53" Margin="4,-13,4,0"/>
                         </Grid>
                     </Button>
                     <Button Margin="0,676,0,22" Background="Transparent" Click="Power_Click" Style="{StaticResource menuButton}">
