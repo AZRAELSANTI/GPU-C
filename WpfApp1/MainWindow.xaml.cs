@@ -18,6 +18,9 @@ namespace WpfApp1
 
     public partial class MainWindow
     {
+        private Application wordApp;
+        private Document doc;
+        private Test stressTest;
         public PCInfoViewModel PCInfo { get; set; }
 
         public MainWindow()
@@ -34,9 +37,9 @@ namespace WpfApp1
             UpdateProcessorInfo();
             UpdateGpuInfo();
             DataContext = this;
-            
-            
-    }
+            stressTest = new Test();
+
+        }
 
 
 
@@ -73,11 +76,12 @@ namespace WpfApp1
 
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-           
+            stressTest.RunAllStressTests();
+            MessageBox.Show("Stress tests completed successfully!");
         }
-        
-        
-        
+
+
+
 
 
 
