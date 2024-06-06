@@ -14,7 +14,7 @@
         <Style TargetType="DataGridCell">
             <Setter Property="Background" Value="Transparent"/>
         </Style>
-    </Window.Resources>
+     </Window.Resources>
 
 
 
@@ -38,10 +38,26 @@
                             <Ellipse Width="8" Height="8" Fill="#009d00"/>
                         </StackPanel>
                         <uc:menubutton Icon="HomeVariant" IsActive="True"/>
-                        <uc:menubutton Icon="CommentMultipleOutline" />
-                        <uc:menubutton Icon="AlertCircleOutline" />
+                       
                         <uc:menubutton Icon="CogOutline"/>
                     </StackPanel>
+                    <Button Margin="0,-260,0,22" Background="Transparent" Click="Test_Click" Style="{StaticResource menuButton}">
+                        <Grid ClipToBounds ="True">
+                            <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Visibility" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Button}}}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=menuButton, Path=isActive}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <uc:menubutton Icon="Memory" VerticalAlignment="Top" Width="93" Height="53" Margin="4,-13,4,0"/>
+                        </Grid>
+                    </Button>
                     <Button Margin="0,676,0,22" Background="Transparent" Click="Power_Click" Style="{StaticResource menuButton}">
                         <Grid ClipToBounds ="True">
                             <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
@@ -211,7 +227,7 @@
 
                         <TextBlock Text="Total Disk Space:"  FontFamily="/Fonts/#Rubik" Margin="0,39,933,232"  Foreground="#7166f9"/>
 
-                        <ProgressBar x:Name="progressBarTotal" Margin="0,60,867,207" Background="Transparent" >
+                        <ProgressBar x:Name="progressBarTotal" Margin="0,60,867,207" Background="Transparent"  >
                             
                         </ProgressBar>
 

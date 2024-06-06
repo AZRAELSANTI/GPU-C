@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.IconPacks;
 
+
 namespace WpfApp1.userControls
 {
     /// <summary>
@@ -47,6 +48,7 @@ namespace WpfApp1.userControls
         public static readonly DependencyProperty IsActiveProperty =
             DependencyProperty.Register("isActive", typeof(bool), typeof(menubutton));
 
+       
     }
 }
 
