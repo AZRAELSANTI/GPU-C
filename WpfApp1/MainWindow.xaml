@@ -39,9 +39,26 @@
                         </StackPanel>
                         <uc:menubutton Icon="HomeVariant" IsActive="True"/>
                        
-                        <uc:menubutton Icon="CogOutline"/>
+                       
                     </StackPanel>
-                    <Button Margin="0,-260,0,22" Background="Transparent" Click="Info_Click" Style="{StaticResource menuButton}">
+                    <Button Margin="0,-260,0,22" Background="Transparent" Click="Registr_Click" Style="{StaticResource menuButton}">
+                        <Grid ClipToBounds ="True">
+                            <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Visibility" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Button}}}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=menuButton, Path=isActive}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <uc:menubutton Icon="RegisteredTrademark" VerticalAlignment="Top" Width="93" Height="53" Margin="4,-13,4,0"/>
+                        </Grid>
+                    </Button>
+                    <Button Margin="0,-380,0,22" Background="Transparent" Click="Info_Click"  Style="{StaticResource menuButton}">
                         <Grid ClipToBounds ="True">
                             <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
                                 <Ellipse.Style>
@@ -58,7 +75,24 @@
                             <uc:menubutton Icon="Memory" VerticalAlignment="Top" Width="93" Height="53" Margin="4,-13,4,0"/>
                         </Grid>
                     </Button>
-                    <Button Margin="0,-140,0,22" Background="Transparent" Click="Test_Click" Style="{StaticResource menuButton}">
+                    <Button Margin="0,-140,0,22" Background="Transparent" Click="Apps_Click"  Style="{StaticResource menuButton}">
+                        <Grid ClipToBounds ="True">
+                            <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Visibility" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Button}}}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=menuButton, Path=isActive}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <uc:menubutton Icon="Apps" VerticalAlignment="Top" Width="93" Height="53" Margin="4,-13,4,0"/>
+                        </Grid>
+                    </Button>
+                    <Button Margin="0,-20,0,22" Background="Transparent" Click="Test_Click" Style="{StaticResource menuButton}">
                         <Grid ClipToBounds ="True">
                             <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
                                 <Ellipse.Style>
@@ -93,7 +127,7 @@
                         </Grid>
                     </Button>
                     <TextBlock Text="Designed By Fujiwara" FontSize="37" 
-                               Foreground="White" FontFamily="Fonts/#Comforter" Height="62" TextAlignment="Center" Margin="-92,463,-109,0" VerticalAlignment="Top" TextWrapping="Wrap" RenderTransformOrigin="0.5,0.5">
+                               Foreground="White" FontFamily="Fonts/#Comforter" Height="62" TextAlignment="Center" Margin="-69,486,-86,0" VerticalAlignment="Top" TextWrapping="Wrap" RenderTransformOrigin="0.5,0.5">
 
                         <TextBlock.RenderTransform>
                             <RotateTransform Angle="270"/>

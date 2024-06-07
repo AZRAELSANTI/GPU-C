@@ -9,6 +9,11 @@ using System.Windows.Input;
 using WpfApp1.ViewModel;
 using Application = Microsoft.Office.Interop.Word.Application;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Win32;
+
+
 
 
 namespace WpfApp1
@@ -78,12 +83,89 @@ namespace WpfApp1
 
             MessageBox.Show("Стресс тест успешно завершен!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+        private void Registr_Click(object sender, RoutedEventArgs e)
+        {
+            Application wordApp = new Application();
+            Document document = wordApp.Documents.Add();
 
+            TraverseRegistry(Registry.LocalMachine, document);
 
+            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "registry_info.docx");
+            document.SaveAs2(filePath);
+            document.Close();
+            wordApp.Quit();
 
+            MessageBox.Show("Информация из реестра сохранена на рабочем столе в файле 'registry_info.docx'");
+        }
 
+        private void TraverseRegistry(RegistryKey key, Document document)
+        {
+            foreach (string subKeyName in key.GetSubKeyNames())
+            {
+                RegistryKey subKey = key.OpenSubKey(subKeyName);
+                Paragraph keyInfo = document.Content.Paragraphs.Add();
+                keyInfo.Range.Text = $"Ключ: {subKeyName}";
+                keyInfo.Range.Font.Bold = 1;
+                keyInfo.Range.InsertParagraphAfter();
 
+                foreach (string valueName in subKey.GetValueNames())
+                {
+                    object value = subKey.GetValue(valueName);
+                    Paragraph valueInfo = document.Content.Paragraphs.Add();
+                    valueInfo.Range.Text = $"\t{valueName}: {value}";
+                    valueInfo.Range.InsertParagraphAfter();
+                }
 
+                keyInfo.Range.InsertParagraphAfter();
+
+                TraverseRegistry(subKey, document); // Рекурсивный обход подключей
+            }
+        }
+    
+    
+    
+
+        private void Apps_Click(object sender, RoutedEventArgs e)
+        {
+
+            {
+                Application wordApp = new Application();
+                Document document = wordApp.Documents.Add();
+
+                RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall");
+
+                Paragraph title = document.Content.Paragraphs.Add();
+                title.Range.Text = "Установленные приложения";
+                title.Range.Font.Bold = 1;
+                title.Range.Font.Size = 16;
+                title.Range.InsertParagraphAfter();
+
+                if (key != null)
+                {
+                    foreach (string subKeyName in key.GetSubKeyNames())
+                    {
+                        RegistryKey subKey = key.OpenSubKey(subKeyName);
+                        string appName = subKey.GetValue("DisplayName") as string;
+                        string appVersion = subKey.GetValue("DisplayVersion") as string;
+
+                        if (!string.IsNullOrEmpty(appName) && !string.IsNullOrEmpty(appVersion))
+                        {
+                            Paragraph appInfo = document.Content.Paragraphs.Add();
+                            appInfo.Range.Text = $"{appName} - {appVersion}";
+                            appInfo.Range.InsertParagraphAfter();
+                        }
+                    }
+                }
+
+                string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "installed_apps.docx");
+                document.SaveAs2(filePath);
+                document.Close();
+                wordApp.Quit();
+
+                MessageBox.Show("Информация об установленных приложениях сохранена на рабочем столе в файле 'installed_apps.docx'");
+            }
+        }
+    
 
         private void GetDiskSpaceInfo()
         {
