@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Win32;
+using System.Security.AccessControl;
 
 
 
@@ -85,45 +86,56 @@ namespace WpfApp1
         }
         private void Registr_Click(object sender, RoutedEventArgs e)
         {
-            Application wordApp = new Application();
-            Document document = wordApp.Documents.Add();
-
-            TraverseRegistry(Registry.LocalMachine, document);
-
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "registry_info.docx");
-            document.SaveAs2(filePath);
-            document.Close();
-            wordApp.Quit();
 
-            MessageBox.Show("Информация из реестра сохранена на рабочем столе в файле 'registry_info.docx'");
-        }
-
-        private void TraverseRegistry(RegistryKey key, Document document)
-        {
-            foreach (string subKeyName in key.GetSubKeyNames())
+            using (RegistryKey key = Registry.LocalMachine)
             {
-                RegistryKey subKey = key.OpenSubKey(subKeyName);
-                Paragraph keyInfo = document.Content.Paragraphs.Add();
-                keyInfo.Range.Text = $"Ключ: {subKeyName}";
-                keyInfo.Range.Font.Bold = 1;
-                keyInfo.Range.InsertParagraphAfter();
+                Application wordApp = new Application();
+                { 
+                Document document = wordApp.Documents.Add();
 
-                foreach (string valueName in subKey.GetValueNames())
-                {
-                    object value = subKey.GetValue(valueName);
-                    Paragraph valueInfo = document.Content.Paragraphs.Add();
-                    valueInfo.Range.Text = $"\t{valueName}: {value}";
-                    valueInfo.Range.InsertParagraphAfter();
+                TraverseRegistry(key, document.Content);
+
+                    document.SaveAs2(filePath);
+                    document.Close();
+                    wordApp.Quit();
+
+                    MessageBox.Show("Информация из реестра сохранена на рабочем столе в файле 'registry_info.docx'");
                 }
-
-                keyInfo.Range.InsertParagraphAfter();
-
-                TraverseRegistry(subKey, document); // Рекурсивный обход подключей
             }
         }
-    
-    
-    
+
+        private void TraverseRegistry(RegistryKey key, Range parentRange)
+        {
+
+            foreach (string subKeyName in key.GetSubKeyNames())
+            {
+                using (RegistryKey subKey = key.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\"))
+                {
+                    if (subKey == null)
+                    {
+                        continue; // Пропускаем ключ, если у нас нет доступа к нему
+                    }
+
+                    Paragraph keyParagraph = parentRange.Paragraphs.Add();
+                    keyParagraph.Range.Text = $"Ключ: {subKeyName}";
+                    keyParagraph.Range.InsertParagraphAfter();
+
+                    foreach (string valueName in subKey.GetValueNames())
+                    {
+                        object value = subKey.GetValue(valueName);
+                        Paragraph valueParagraph = parentRange.Paragraphs.Add();
+                        valueParagraph.Range.Text = $"\t{valueName}: {value}";
+                        valueParagraph.Range.InsertParagraphAfter();
+                    }
+
+                    TraverseRegistry(subKey, parentRange); // Рекурсивный обход подключей
+                }
+            }
+        }
+
+
+
 
         private void Apps_Click(object sender, RoutedEventArgs e)
         {
