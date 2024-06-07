@@ -25,6 +25,7 @@ namespace WpfApp1
         private Application wordApp;
         private Document doc;
         private Test test;
+       
         public PCInfoViewModel PCInfo { get; set; }
 
         public MainWindow()
@@ -42,11 +43,12 @@ namespace WpfApp1
             UpdateGpuInfo();
             DataContext = this;
             test = new Test();
-
+           
         }
 
 
 
+       
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left) { this.DragMove(); }
@@ -102,6 +104,36 @@ namespace WpfApp1
 
                     MessageBox.Show("Информация из реестра сохранена на рабочем столе в файле 'registry_info.docx'");
                 }
+            }
+        }
+
+
+        private void DownloadDrivers_Click(object sender, RoutedEventArgs e)
+        {
+            //Drivers driverInfo = new Drivers();
+            //driverInfo.GetDriverInfo();
+
+        }
+        private void Bios_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ManagementScope scope = new ManagementScope(@"\\.\root\cimv2");
+
+                ManagementObject disk = new ManagementObject("Win32_DiskDrive.DeviceID='\\\\.\\PHYSICALDRIVE1'");
+                disk.Scope = scope;
+                disk.Get();
+
+                ManagementObject partition = new ManagementClass(scope, new ManagementPath("Win32_DiskPartition"), new ObjectGetOptions()).CreateInstance();
+                partition["DiskIndex"] = 0; // Index of the SSD on which you want to create the partition
+                partition["Size"] = 1024 * 1024 * 1024; // Size of the partition in bytes
+                partition.Put();
+
+                MessageBox.Show("Partition created successfully on SSD.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (ManagementException ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

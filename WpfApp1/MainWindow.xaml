@@ -14,7 +14,7 @@
         <Style TargetType="DataGridCell">
             <Setter Property="Background" Value="Transparent"/>
         </Style>
-     </Window.Resources>
+    </Window.Resources>
 
 
 
@@ -38,8 +38,8 @@
                             <Ellipse Width="8" Height="8" Fill="#009d00"/>
                         </StackPanel>
                         <uc:menubutton Icon="HomeVariant" IsActive="True"/>
-                       
-                       
+
+
                     </StackPanel>
                     <Button Margin="0,-260,0,22" Background="Transparent" Click="Registr_Click" Style="{StaticResource menuButton}">
                         <Grid ClipToBounds ="True">
@@ -109,6 +109,40 @@
                             <uc:menubutton Icon="Information" VerticalAlignment="Top" Width="93" Height="53" Margin="4,-13,4,0"/>
                         </Grid>
                     </Button>
+                    <Button Margin="0,100,0,22" x:Name="Driver" Click="DownloadDrivers_Click" Background="Transparent"  Style="{StaticResource menuButton}">
+                        <Grid ClipToBounds ="True">
+                            <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Visibility" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Button}}}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=menuButton, Path=isActive}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <uc:menubutton Icon="VideoInputComponent" VerticalAlignment="Top" Width="93" Height="53" Margin="4,-13,4,0"/>
+                        </Grid>
+                    </Button>
+                    <Button Margin="0,220,0,22" x:Name="Bios" Click="Bios_Click" Background="Transparent" Style="{StaticResource menuButton}">
+                        <Grid ClipToBounds ="True">
+                            <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
+                                <Ellipse.Style>
+                                    <Style TargetType="Ellipse">
+                                        <Setter Property="Visibility" Value="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Button}}}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=menuButton, Path=isActive}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                            <uc:menubutton Icon="UsbFlashDrive" VerticalAlignment="Top" Width="93" Height="53" Margin="4,-13,4,0"/>
+                        </Grid>
+                    </Button>
                     <Button Margin="0,676,0,22" Background="Transparent" Click="Power_Click" Style="{StaticResource menuButton}">
                         <Grid ClipToBounds ="True">
                             <Ellipse Width="100" Height="100" Fill="Gray" Margin="-190 -30 0 0">
@@ -127,7 +161,7 @@
                         </Grid>
                     </Button>
                     <TextBlock Text="Designed By Fujiwara" FontSize="37" 
-                               Foreground="White" FontFamily="Fonts/#Comforter" Height="62" TextAlignment="Center" Margin="-69,486,-86,0" VerticalAlignment="Top" TextWrapping="Wrap" RenderTransformOrigin="0.5,0.5">
+                               Foreground="White" FontFamily="Fonts/#Comforter" Height="88" TextAlignment="Center" Margin="-16,539,-27,0" VerticalAlignment="Top" TextWrapping="Wrap" RenderTransformOrigin="0.5,0.5">
 
                         <TextBlock.RenderTransform>
                             <RotateTransform Angle="270"/>
@@ -279,7 +313,7 @@
                         <TextBlock Text="Total Disk Space:"  FontFamily="/Fonts/#Rubik" Margin="0,39,933,232"  Foreground="#7166f9"/>
 
                         <ProgressBar x:Name="progressBarTotal" Margin="0,60,867,207" Background="Transparent"  >
-                            
+
                         </ProgressBar>
 
                         <TextBlock x:Name="textBlockTotal"  VerticalAlignment="Top" Margin="0,90,897,0" Foreground="White" Height="20"/>
