@@ -110,35 +110,71 @@ namespace WpfApp1
 
         private void DownloadDrivers_Click(object sender, RoutedEventArgs e)
         {
-            //Drivers driverInfo = new Drivers();
-            //driverInfo.GetDriverInfo();
+            Drivers drivers = new Drivers();
+            drivers.CheckForDriverUpdates();
 
         }
         private void Bios_Click(object sender, RoutedEventArgs e)
         {
-            try
+            Process process = new Process();
+
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = "cmd.exe";
+            startInfo.RedirectStandardInput = true;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = false;
+            process.StartInfo = startInfo;
+            process.Start();
+
+            StreamWriter sw = process.StandardInput;
+            StreamReader sr = process.StandardOutput;
+
+            if (sw.BaseStream.CanWrite)
             {
-                ManagementScope scope = new ManagementScope(@"\\.\root\cimv2");
+                sw.WriteLine("diskpart");
 
-                ManagementObject disk = new ManagementObject("Win32_DiskDrive.DeviceID='\\\\.\\PHYSICALDRIVE1'");
-                disk.Scope = scope;
-                disk.Get();
+                string output = "";
+                process.WaitForExit();
 
-                ManagementObject partition = new ManagementClass(scope, new ManagementPath("Win32_DiskPartition"), new ObjectGetOptions()).CreateInstance();
-                partition["DiskIndex"] = 0; // Index of the SSD on which you want to create the partition
-                partition["Size"] = 1024 * 1024 * 1024; // Size of the partition in bytes
-                partition.Put();
+                sw.WriteLine("list disk");
+                sw.WriteLine("exit");
 
-                MessageBox.Show("Partition created successfully on SSD.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                while (!sr.EndOfStream)
+                {
+                    string line = sr.ReadLine();
+                    Console.WriteLine(line);
+                    if (line.Contains("Removable"))
+                    {
+                        string[] tokens = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (tokens.Length >= 2)
+                        {
+                            int diskIndex = int.Parse(tokens[1]);
+                            sw.WriteLine($"select disk {diskIndex}");
+                            sw.WriteLine("clean");
+                            sw.WriteLine("create partition primary");
+
+                            Console.WriteLine("Please enter the size of the partition in MB:");
+                            string partitionSize = Console.ReadLine();
+
+                            sw.WriteLine($"size={partitionSize}");
+                            sw.WriteLine("format fs=ntfs quick");
+                            sw.WriteLine("assign letter=D");
+
+                            break;
+                        }
+                    }
+                }
+
+                sw.WriteLine("exit");
             }
-            catch (ManagementException ex)
-            {
-                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+
+            MessageBox.Show("Flash Drive prepared successfully!", "Success");
         }
+    
 
-        private void TraverseRegistry(RegistryKey key, Range parentRange)
-        {
+    private void TraverseRegistry(RegistryKey key, Range parentRange)
+            {
 
             foreach (string subKeyName in key.GetSubKeyNames())
             {
