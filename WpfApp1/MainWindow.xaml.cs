@@ -116,64 +116,93 @@ namespace WpfApp1
         }
         private void Bios_Click(object sender, RoutedEventArgs e)
         {
-            Process process = new Process();
 
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "cmd.exe";
-            startInfo.RedirectStandardInput = true;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.UseShellExecute = false;
-            startInfo.CreateNoWindow = false;
-            process.StartInfo = startInfo;
+
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string filePath = Path.Combine(desktopPath, "output.txt");
+
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = "/C diskpart",
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = false
+            };
+
+            Process process = new Process { StartInfo = startInfo };
             process.Start();
 
-            StreamWriter sw = process.StandardInput;
-            StreamReader sr = process.StandardOutput;
+            process.StandardInput.WriteLine("list disk");
+            process.StandardInput.WriteLine("exit");
 
-            if (sw.BaseStream.CanWrite)
-            {
-                sw.WriteLine("diskpart");
+            string output = process.StandardOutput.ReadToEnd();
 
-                string output = "";
-                process.WaitForExit();
+            File.WriteAllText(filePath, output); // Не указываем кодировку
 
-                sw.WriteLine("list disk");
-                sw.WriteLine("exit");
+            process.WaitForExit();
+            process.Close();
 
-                while (!sr.EndOfStream)
-                {
-                    string line = sr.ReadLine();
-                    Console.WriteLine(line);
-                    if (line.Contains("Removable"))
-                    {
-                        string[] tokens = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                        if (tokens.Length >= 2)
-                        {
-                            int diskIndex = int.Parse(tokens[1]);
-                            sw.WriteLine($"select disk {diskIndex}");
-                            sw.WriteLine("clean");
-                            sw.WriteLine("create partition primary");
-
-                            Console.WriteLine("Please enter the size of the partition in MB:");
-                            string partitionSize = Console.ReadLine();
-
-                            sw.WriteLine($"size={partitionSize}");
-                            sw.WriteLine("format fs=ntfs quick");
-                            sw.WriteLine("assign letter=D");
-
-                            break;
-                        }
-                    }
-                }
-
-                sw.WriteLine("exit");
-            }
-
-            MessageBox.Show("Flash Drive prepared successfully!", "Success");
+            MessageBox.Show("Результат выполнения команды diskpart сохранен на рабочем столе в файле output.txt", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-    
 
-    private void TraverseRegistry(RegistryKey key, Range parentRange)
+
+        //static string RunDiskpart(string command)
+        //{
+        //    ProcessStartInfo startInfo = new ProcessStartInfo
+        //    {
+        //        FileName = "diskpart",
+
+        //        RedirectStandardError = true, // Добавляем вывод ошибок
+        //        RedirectStandardOutput = true, // Добавляем вывод стандартного вывода
+        //        UseShellExecute = false, // Отключаем использование оболочки
+        //        CreateNoWindow = true // Создаем окно консоли
+        //    };
+
+        //    Process process = new Process { StartInfo = startInfo };
+        //    process.Start();
+        //    process.StandardInput.WriteLine(command);
+        //    process.StandardInput.WriteLine("exit");
+
+        //    string output = process.StandardOutput.ReadToEnd(); // Читаем стандартный вывод
+        //    string error = process.StandardError.ReadToEnd(); // Читаем вывод ошибок
+
+        //    if (!string.IsNullOrEmpty(error))
+        //    {
+        //        Console.WriteLine("Произошла ошибка:");
+        //        Console.WriteLine(error);
+        //    }
+
+        //    return output;
+        //}
+
+        //static void ListDisks()
+        //{
+        //    string output = RunDiskpart("list disk");
+        //    string[] lines = output.Split('\n');
+        //    foreach (string line in lines)
+        //    {
+        //        if (line.Contains("Disk"))
+        //        {
+        //            Console.WriteLine(line);
+        //        }
+        //    }
+        //}
+
+        //static void CreatePartition()
+        //{
+        //    Console.Write("Введите номер диска для разбиения: ");
+        //    string diskNumber = Console.ReadLine();
+        //    Console.Write("Введите размер раздела в мегабайтах: ");
+        //    string partitionSize = Console.ReadLine();
+
+        //    string command = $"select disk {diskNumber}\ncreate partition primary size={partitionSize}\nformat fs=ntfs quick label=\"NewVolume\" assign letter=D";
+        //    string output = RunDiskpart(command);
+        //    Console.WriteLine(output);
+        //}
+
+        private void TraverseRegistry(RegistryKey key, Range parentRange)
             {
 
             foreach (string subKeyName in key.GetSubKeyNames())
