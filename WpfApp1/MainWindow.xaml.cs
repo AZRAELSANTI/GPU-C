@@ -116,6 +116,14 @@ namespace WpfApp1
         }
         private void Bios_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                Process.Start("shutdown", "/r /fw /t 0");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             //string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             //string filePath = Path.Combine(desktopPath, "output.txt");
 
