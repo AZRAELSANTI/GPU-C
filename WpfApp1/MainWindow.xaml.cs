@@ -116,8 +116,6 @@ namespace WpfApp1
         }
         private void Bios_Click(object sender, RoutedEventArgs e)
         {
-
-
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string filePath = Path.Combine(desktopPath, "output.txt");
 
@@ -135,11 +133,19 @@ namespace WpfApp1
             process.Start();
 
             process.StandardInput.WriteLine("list disk");
+            process.StandardInput.WriteLine("select disk 0"); // Заменить 0 на номер нужного диска
+            process.StandardInput.WriteLine("detail disk");
             process.StandardInput.WriteLine("exit");
 
             string output = process.StandardOutput.ReadToEnd();
 
-            File.WriteAllText(filePath, output); // Не указываем кодировку
+            // Очистка лишних символов DiskPart
+            string cleanedOutput = output.Substring(output.IndexOf("DISKPART>") + 9).Trim();
+
+            using (StreamWriter sw = new StreamWriter(filePath))
+            {
+                sw.Write(cleanedOutput);
+            }
 
             process.WaitForExit();
             process.Close();
@@ -148,61 +154,7 @@ namespace WpfApp1
         }
 
 
-        //static string RunDiskpart(string command)
-        //{
-        //    ProcessStartInfo startInfo = new ProcessStartInfo
-        //    {
-        //        FileName = "diskpart",
-
-        //        RedirectStandardError = true, // Добавляем вывод ошибок
-        //        RedirectStandardOutput = true, // Добавляем вывод стандартного вывода
-        //        UseShellExecute = false, // Отключаем использование оболочки
-        //        CreateNoWindow = true // Создаем окно консоли
-        //    };
-
-        //    Process process = new Process { StartInfo = startInfo };
-        //    process.Start();
-        //    process.StandardInput.WriteLine(command);
-        //    process.StandardInput.WriteLine("exit");
-
-        //    string output = process.StandardOutput.ReadToEnd(); // Читаем стандартный вывод
-        //    string error = process.StandardError.ReadToEnd(); // Читаем вывод ошибок
-
-        //    if (!string.IsNullOrEmpty(error))
-        //    {
-        //        Console.WriteLine("Произошла ошибка:");
-        //        Console.WriteLine(error);
-        //    }
-
-        //    return output;
-        //}
-
-        //static void ListDisks()
-        //{
-        //    string output = RunDiskpart("list disk");
-        //    string[] lines = output.Split('\n');
-        //    foreach (string line in lines)
-        //    {
-        //        if (line.Contains("Disk"))
-        //        {
-        //            Console.WriteLine(line);
-        //        }
-        //    }
-        //}
-
-        //static void CreatePartition()
-        //{
-        //    Console.Write("Введите номер диска для разбиения: ");
-        //    string diskNumber = Console.ReadLine();
-        //    Console.Write("Введите размер раздела в мегабайтах: ");
-        //    string partitionSize = Console.ReadLine();
-
-        //    string command = $"select disk {diskNumber}\ncreate partition primary size={partitionSize}\nformat fs=ntfs quick label=\"NewVolume\" assign letter=D";
-        //    string output = RunDiskpart(command);
-        //    Console.WriteLine(output);
-        //}
-
-        private void TraverseRegistry(RegistryKey key, Range parentRange)
+            private void TraverseRegistry(RegistryKey key, Range parentRange)
             {
 
             foreach (string subKeyName in key.GetSubKeyNames())

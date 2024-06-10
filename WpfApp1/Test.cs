@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Excel = Microsoft.Office.Interop.Excel;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using DocumentFormat.OpenXml.ExtendedProperties;
 using OpenHardwareMonitor.Hardware;
 using Word = Microsoft.Office.Interop.Word;
 namespace WpfApp1
@@ -41,7 +40,7 @@ namespace WpfApp1
             RunCPUSressTest();
             RunGPUStressTest();
             RunRAMStressTest();
-            SaveResultsToWord();
+            SaveResultsToExcel(cpuTemperature, cpuLoad, gpuLoad, gpuClockSpeed, ramLoad);
 
         }
 
@@ -129,26 +128,60 @@ namespace WpfApp1
 
 
 
-        private void SaveResultsToWord()
+        private void SaveResultsToExcel(double cpuTemperature, double cpuLoad, double gpuLoad, double gpuClockSpeed, double ramLoad)
         {
+            Excel.Application excelApp = new Excel.Application();
+            excelApp.Visible = true; // Сделать Excel видимым
+
+            Excel.Workbook workbook = excelApp.Workbooks.Add();
+            Excel.Worksheet worksheet = workbook.Sheets[1];
+
+            // Добавление данных в ячейки
+            worksheet.Cells[1, 1] = "Параметр";
+            worksheet.Cells[1, 2] = "Значение";
+            worksheet.Cells[2, 1] = "Температура процессора";
+            worksheet.Cells[2, 2] = cpuTemperature;
+            worksheet.Cells[3, 1] = "Загрузка процессора";
+            worksheet.Cells[3, 2] = cpuLoad;
+            worksheet.Cells[4, 1] = "Загрузка GPU";
+            worksheet.Cells[4, 2] = gpuLoad;
+            worksheet.Cells[5, 1] = "Частота работы GPU";
+            worksheet.Cells[5, 2] = gpuClockSpeed;
+            worksheet.Cells[6, 1] = "Загрузка оперативной памяти";
+            worksheet.Cells[6, 2] = ramLoad;
+
+            // Добавление гистограммы
+            Excel.ChartObjects chartObjects = (Excel.ChartObjects)worksheet.ChartObjects(Type.Missing);
+            Excel.ChartObject chartObject = chartObjects.Add(100, 80, 300, 250);
+            Excel.Chart chart = chartObject.Chart;
+
+            Excel.Range dataRange = worksheet.Range["A2", "B6"];
+            chart.SetSourceData(dataRange);
+            chart.ChartType = Excel.XlChartType.xlColumnClustered;
+
+            // Сохранение файла
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string filePath = Path.Combine(desktopPath, "StressTestResults.docx");
+            string filePath = Path.Combine(desktopPath, "StressTestResultsWithHistogram.xlsx");
+            workbook.SaveAs(filePath);
 
-            object fileName = filePath;
+            // Закрытие книги и приложения Excel
+            workbook.Close();
+            excelApp.Quit();
 
-
-            doc.Content.Text += "Результаты стресс-тестирования:\n\n";
-            doc.Content.Text += $"Температура процессора: {cpuTemperature} °C\n";
-            doc.Content.Text += $"Загрузка процессора: {cpuLoad} %\n";
-            doc.Content.Text += $"Загрузка GPU: {gpuLoad} %\n";
-            doc.Content.Text += $"Частота работы GPU: {gpuClockSpeed} MHz\n";
-            doc.Content.Text += $"Загрузка оперативной памяти: {ramLoad}%\n";
-
-            doc.SaveAs(filePath);
-            doc.Close();
-            wordApp.Quit();
-
+            // Освобождение ресурсов
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(chart);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(chartObject);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(chartObjects);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
         }
-
     }
 }
+    
+    
+    
+
+        
+    
+            
