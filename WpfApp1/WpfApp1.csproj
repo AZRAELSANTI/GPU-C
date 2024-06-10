@@ -473,6 +473,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Drivers.cs" />
+    <Compile Include="Start.xaml.cs">
+      <DependentUpon>Start.xaml</DependentUpon>
+    </Compile>
     <Compile Include="System\Diagnostics\Computer.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="userControls\Country.xaml.cs">
@@ -510,6 +513,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Start.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="userControls\Country.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

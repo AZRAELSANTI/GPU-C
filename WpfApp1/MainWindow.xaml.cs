@@ -116,41 +116,41 @@ namespace WpfApp1
         }
         private void Bios_Click(object sender, RoutedEventArgs e)
         {
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string filePath = Path.Combine(desktopPath, "output.txt");
+            //string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //string filePath = Path.Combine(desktopPath, "output.txt");
 
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments = "/C diskpart",
-                RedirectStandardInput = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = false
-            };
+            //ProcessStartInfo startInfo = new ProcessStartInfo
+            //{
+            //    FileName = "cmd.exe",
+            //    Arguments = "/C diskpart",
+            //    RedirectStandardInput = true,
+            //    RedirectStandardOutput = true,
+            //    UseShellExecute = false,
+            //    CreateNoWindow = false
+            //};
 
-            Process process = new Process { StartInfo = startInfo };
-            process.Start();
+            //Process process = new Process { StartInfo = startInfo };
+            //process.Start();
 
-            process.StandardInput.WriteLine("list disk");
-            process.StandardInput.WriteLine("select disk 0"); // Заменить 0 на номер нужного диска
-            process.StandardInput.WriteLine("detail disk");
-            process.StandardInput.WriteLine("exit");
+            //process.StandardInput.WriteLine("list disk");
+            //process.StandardInput.WriteLine("select disk 0"); // Заменить 0 на номер нужного диска
+            //process.StandardInput.WriteLine("detail disk");
+            //process.StandardInput.WriteLine("exit");
 
-            string output = process.StandardOutput.ReadToEnd();
+            //string output = process.StandardOutput.ReadToEnd();
 
-            // Очистка лишних символов DiskPart
-            string cleanedOutput = output.Substring(output.IndexOf("DISKPART>") + 9).Trim();
+            //// Очистка лишних символов DiskPart
+            //string cleanedOutput = output.Substring(output.IndexOf("DISKPART>") + 9).Trim();
 
-            using (StreamWriter sw = new StreamWriter(filePath))
-            {
-                sw.Write(cleanedOutput);
-            }
+            //using (StreamWriter sw = new StreamWriter(filePath))
+            //{
+            //    sw.Write(cleanedOutput);
+            //}
 
-            process.WaitForExit();
-            process.Close();
+            //process.WaitForExit();
+            //process.Close();
 
-            MessageBox.Show("Результат выполнения команды diskpart сохранен на рабочем столе в файле output.txt", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
+            //MessageBox.Show("Результат выполнения команды diskpart сохранен на рабочем столе в файле output.txt", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
 
