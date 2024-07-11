@@ -32,12 +32,8 @@
             <Border Grid.RowSpan="3" Background="#1e2e44" CornerRadius="25 0 0 25">
                 <Grid>
                     <StackPanel VerticalAlignment="Top">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 30 0 40">
-                            <Ellipse Width="8" Height="8" Fill="#eb1700"/>
-                            <Ellipse Width="8" Height="8" Fill="#ffaf01" Margin="7 0"/>
-                            <Ellipse Width="8" Height="8" Fill="#009d00"/>
-                        </StackPanel>
-                        <uc:menubutton Icon="HomeVariant" IsActive="True"/>
+                        
+                        <uc:menubutton Icon="HomeVariant" IsActive="True" Margin="0, 80, 0, 22"/>
 
 
                     </StackPanel>
