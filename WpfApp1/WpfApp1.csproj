@@ -478,9 +478,6 @@
     </Compile>
     <Compile Include="System\Diagnostics\Computer.cs" />
     <Compile Include="Test.cs" />
-    <Compile Include="userControls\Country.xaml.cs">
-      <DependentUpon>Country.xaml</DependentUpon>
-    </Compile>
     <Compile Include="userControls\InfoCard.xaml.cs">
       <DependentUpon>InfoCard.xaml</DependentUpon>
     </Compile>
@@ -514,10 +511,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Start.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="userControls\Country.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

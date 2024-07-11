@@ -1,11 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Management;
+﻿using System.Management;
 using System.Text;
-using System.Windows;
-using Microsoft.Office.Interop.Word;
-using Application = Microsoft.Office.Interop.Word.Application;
 
 namespace WpfApp1
 {

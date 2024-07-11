@@ -1,18 +1,12 @@
-﻿using OpenHardwareMonitor.Hardware;
-using Microsoft.Office.Interop.Word;
+﻿using Microsoft.Office.Interop.Word;
 using System;
 using System.IO;
-using System.Management;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using WpfApp1.ViewModel;
 using Application = Microsoft.Office.Interop.Word.Application;
 using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Win32;
-using System.Security.AccessControl;
 
 
 
@@ -21,13 +15,9 @@ namespace WpfApp1
 {
 
     public partial class MainWindow
-    {
-        private Application wordApp;
-        private Document doc;
+    {     
         private Test test;
-       
         public PCInfoViewModel PCInfo { get; set; }
-
         public MainWindow()
         {
             InitializeComponent();
@@ -44,11 +34,7 @@ namespace WpfApp1
             DataContext = this;
             test = new Test();
            
-        }
-
-
-
-       
+        }      
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left) { this.DragMove(); }
@@ -59,24 +45,13 @@ namespace WpfApp1
         }
         private void Info_Click(object sender, RoutedEventArgs e)
         {
-            // Get system information
             string systemInfo = Program.GetSystemInfo();
-
-            // Create a new Word document
             Application wordApp = new Application();
             Document wordDoc = wordApp.Documents.Add();
-
-            // Add system information to the Word document
             wordDoc.Content.Text = systemInfo;
-
-            // Save the Word document
             string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "System Information.docx");
             wordDoc.SaveAs2(filePath);
-
-            // Close the Word application
             wordApp.Quit();
-
-            // Show a message to the user
             MessageBox.Show("Информация о ПК была успешно записана в документ Word", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -106,8 +81,6 @@ namespace WpfApp1
                 }
             }
         }
-
-
         private void DownloadDrivers_Click(object sender, RoutedEventArgs e)
         {
             Drivers drivers = new Drivers();
@@ -123,45 +96,8 @@ namespace WpfApp1
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            //string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            //string filePath = Path.Combine(desktopPath, "output.txt");
-
-            //ProcessStartInfo startInfo = new ProcessStartInfo
-            //{
-            //    FileName = "cmd.exe",
-            //    Arguments = "/C diskpart",
-            //    RedirectStandardInput = true,
-            //    RedirectStandardOutput = true,
-            //    UseShellExecute = false,
-            //    CreateNoWindow = false
-            //};
-
-            //Process process = new Process { StartInfo = startInfo };
-            //process.Start();
-
-            //process.StandardInput.WriteLine("list disk");
-            //process.StandardInput.WriteLine("select disk 0"); // Заменить 0 на номер нужного диска
-            //process.StandardInput.WriteLine("detail disk");
-            //process.StandardInput.WriteLine("exit");
-
-            //string output = process.StandardOutput.ReadToEnd();
-
-            //// Очистка лишних символов DiskPart
-            //string cleanedOutput = output.Substring(output.IndexOf("DISKPART>") + 9).Trim();
-
-            //using (StreamWriter sw = new StreamWriter(filePath))
-            //{
-            //    sw.Write(cleanedOutput);
-            //}
-
-            //process.WaitForExit();
-            //process.Close();
-
-            //MessageBox.Show("Результат выполнения команды diskpart сохранен на рабочем столе в файле output.txt", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
+            }          
         }
-
-
             private void TraverseRegistry(RegistryKey key, Range parentRange)
             {
 
@@ -190,10 +126,6 @@ namespace WpfApp1
                 }
             }
         }
-
-
-
-
         private void Apps_Click(object sender, RoutedEventArgs e)
         {
 
@@ -234,8 +166,6 @@ namespace WpfApp1
                 MessageBox.Show("Информация об установленных приложениях сохранена на рабочем столе в файле 'installed_apps.docx'");
             }
         }
-    
-
         private void GetDiskSpaceInfo()
         {
             string driveName = "C";
@@ -300,11 +230,5 @@ namespace WpfApp1
             lblGpuTemperature.Content = "GPU Temperature: " + gpuTemperature;
             lblGpuUtilization.Content = "GPU Utilization: " + gpuUtilization + "%";
         }
-
     }
 }
-
-
-
-
-

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfApp1.ViewModel
 {
@@ -19,10 +15,9 @@ namespace WpfApp1.ViewModel
                 totalMemoryBytes += Convert.ToUInt64(obj["Capacity"]);
             }
 
-            double totalMemoryGB = totalMemoryBytes / (1024.0 * 1024.0 * 1024.0); // Convert bytes to gigabytes
+            double totalMemoryGB = totalMemoryBytes / (1024.0 * 1024.0 * 1024.0); 
             return totalMemoryGB;
         }
-
         public double GetFreeMemoryInGB()
         {
             ManagementObjectSearcher memorySearcher = new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem");
@@ -33,10 +28,9 @@ namespace WpfApp1.ViewModel
                 freeMemoryBytes = Convert.ToUInt64(obj["FreePhysicalMemory"]);
             }
 
-            double freeMemoryGB = freeMemoryBytes / (1024.0 * 1024.0 * 1024.0); // Convert bytes to gigabytes
+            double freeMemoryGB = freeMemoryBytes / (1024.0 * 1024.0 * 1024.0); 
             return freeMemoryGB;
         }
-
         public double GetUsedMemoryInGB()
         {
             double totalMemoryGB = GetTotalMemoryInGB();

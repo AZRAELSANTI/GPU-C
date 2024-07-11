@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Globalization;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Threading;
 
 namespace WpfApp1
 {
-    /// <summary>
-    /// Логика взаимодействия для Start.xaml
-    /// </summary>
     public partial class Start : Window
     {
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
@@ -19,7 +14,6 @@ namespace WpfApp1
             dispatcherTimer.Interval = new TimeSpan(0, 0, 13);
             dispatcherTimer.Start();
         }
-
         private void MyStart(object sender, EventArgs e)
         {
             MainWindow main = new MainWindow();
@@ -27,6 +21,5 @@ namespace WpfApp1
             dispatcherTimer.Stop();
             this.Close();
         }
-        
     }
 }

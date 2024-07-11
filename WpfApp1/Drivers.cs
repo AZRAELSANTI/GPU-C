@@ -1,17 +1,10 @@
-﻿using System;
-using System.Management;
+﻿using System.Management;
 using System.Net;
-using System.Net.Http;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using HtmlAgilityPack;
-using LibreHardwareMonitor.Hardware.Motherboard;
 
 namespace WpfApp1
 {
-
-
     public class Drivers
     {
         public void CheckForDriverUpdates()
@@ -40,8 +33,6 @@ namespace WpfApp1
                 MessageBox.Show("Драйверы для данного производителя не поддерживаются.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-
-
         private string GetCurrentDriverVersion()
         {
             string query = "SELECT * FROM Win32_PnPSignedDriver WHERE DeviceName LIKE '%Display%'";
@@ -60,7 +51,6 @@ namespace WpfApp1
 
             return "Не удалось получить информацию о версии драйвера";
         }
-
         private string GetGraphicsCardManufacturer()
         {
             if (IsAMDGraphicsCard())
@@ -74,7 +64,6 @@ namespace WpfApp1
 
             return "Unknown";
         }
-
         private bool IsAMDGraphicsCard()
         {
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController");
@@ -90,8 +79,6 @@ namespace WpfApp1
 
             return false;
         }
-
-
         private bool IsNVIDIAGraphicsCard()
         {
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController");
@@ -108,7 +95,6 @@ namespace WpfApp1
             return false;
 
         }
-
         private static string GetLatestDriverVersion(string manufacturer)
         {
             string url = "";

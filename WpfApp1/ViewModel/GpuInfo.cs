@@ -1,18 +1,12 @@
 ﻿using LibreHardwareMonitor.Hardware;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfApp1.ViewModel
 {
     public class GpuInfo
     {
-
-
-
         public string GetGpuTemperature()
         {
             Computer computer = new Computer();
@@ -33,11 +27,10 @@ namespace WpfApp1.ViewModel
 
             return "Temperature information not available";
         }
-
-
         public int GetGpuUtilization()
         {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PerfFormattedData_GPUPerformanceCounters_GPUEngine");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", 
+                "SELECT * FROM Win32_PerfFormattedData_GPUPerformanceCounters_GPUEngine");
 
             foreach (ManagementObject obj in searcher.Get())
             {
@@ -48,7 +41,7 @@ namespace WpfApp1.ViewModel
                 }
             }
 
-            return -1; // Utilization information not available
+            return -1;
         }
     }
 }

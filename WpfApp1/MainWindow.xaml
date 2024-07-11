@@ -167,14 +167,14 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <!--search-->
-                <Grid>
+                <!--<Grid>
                     <TextBlock Margin="40 0 15 0" VerticalAlignment="Center" Foreground="#9ea4ad" Panel.ZIndex="1"
                                IsHitTestVisible="False" Text="Seartch here..."
                                Visibility="{Binding ElementName=textBox, Path=Text, Converter={StaticResource BoolToVis}}"/>
                     <TextBox x:Name="textBox" Style="{StaticResource searchTextBox}"/>
                     <Icon:PackIconMaterial Kind="Magnify" Width="32" Foreground="#9ea4ad" Margin="10,0,0,0" Height="26" VerticalAlignment="Center"/>
 
-                </Grid>
+                </Grid>-->
                 <!--buttons-->
                 <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="20 0 0 0">
                     <Button Style="{StaticResource topMenuButton}">

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Excel = Microsoft.Office.Interop.Excel;
+﻿using OpenHardwareMonitor.Hardware;
+using System;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
-using OpenHardwareMonitor.Hardware;
+using Excel = Microsoft.Office.Interop.Excel;
 using Word = Microsoft.Office.Interop.Word;
 namespace WpfApp1
 {

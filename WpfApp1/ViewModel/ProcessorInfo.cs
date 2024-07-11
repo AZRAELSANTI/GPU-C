@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfApp1.ViewModel
 {
@@ -11,7 +7,8 @@ namespace WpfApp1.ViewModel
     {
         public string GetProcessorTemperature()
         {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PerfFormattedData_Counters_ThermalZoneInformation");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", 
+                "SELECT * FROM Win32_PerfFormattedData_Counters_ThermalZoneInformation");
 
             foreach (ManagementObject obj in searcher.Get())
             {
@@ -26,10 +23,10 @@ namespace WpfApp1.ViewModel
 
             return "Temperature information not available";
         }
-
         public int GetProcessorPowerUsage()
         {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_PerfFormattedData_Counters_ProcessorInformation");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\CIMV2", 
+                "SELECT * FROM Win32_PerfFormattedData_Counters_ProcessorInformation");
 
             foreach (ManagementObject obj in searcher.Get())
             {
@@ -40,7 +37,7 @@ namespace WpfApp1.ViewModel
                 }
             }
 
-            return -1; // Power usage information not available 
+            return -1; 
         }
     }
 }

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Management;
-using System.Windows;
 
 namespace WpfApp1.ViewModel
 {
@@ -19,15 +14,13 @@ namespace WpfApp1.ViewModel
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
             foreach (ManagementObject obj in searcher.Get())
             {
-                CpuInfo = $"{obj["Name"]} ";
-                   
-
+                CpuInfo = $"{obj["Name"]}";
             }
 
             searcher = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController");
             foreach (ManagementObject obj in searcher.Get())
             {
-                GpuInfo = $"{obj["Name"]} " ;
+                GpuInfo = $"{obj["Name"]}";
             }
         }
 
@@ -75,7 +68,7 @@ namespace WpfApp1.ViewModel
             foreach (ManagementObject obj in collection)
             {
                 MotherboardInfo = $"{obj["Manufacturer"]}|{obj["Product"]}";
-                break; // Assuming there is only one motherboard
+                break; 
             }
         }
 
