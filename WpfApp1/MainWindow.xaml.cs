@@ -7,6 +7,9 @@ using WpfApp1.ViewModel;
 using Application = Microsoft.Office.Interop.Word.Application;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.Management;
+using System.Text.RegularExpressions;
+
 
 
 
@@ -15,9 +18,10 @@ namespace WpfApp1
 {
 
     public partial class MainWindow
-    {     
+    {
         private Test test;
         public PCInfoViewModel PCInfo { get; set; }
+        public string MonitorInfo { get; set; }
         public MainWindow()
         {
             InitializeComponent();
@@ -33,8 +37,38 @@ namespace WpfApp1
             UpdateGpuInfo();
             DataContext = this;
             test = new Test();
-           
-        }      
+            NetworkInfo();
+            GetGPUInfo();
+            Monitor();
+
+
+
+
+
+            lblGPUClockSpeed.Content = "VRAM Clock: " + ClockSpeed + "Hz";
+            lblGPUMemoryClockSpeed.Content = "GPU Clock: " +MemoryClockSpeed + "Hz";
+        }
+
+        public long MemoryUsed { get; set; }
+        public int ClockSpeed { get; set; }
+        public int MemoryClockSpeed { get; set; }
+
+
+
+        private void GetGPUInfo()
+        {
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController");
+            ManagementObjectCollection collection = searcher.Get();
+
+            foreach (ManagementObject obj in collection)
+            {
+                
+                ClockSpeed = int.Parse(obj["CurrentBitsPerPixel"].ToString());
+                MemoryClockSpeed = int.Parse(obj["CurrentRefreshRate"].ToString());
+                break;
+            }
+        }
+
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left) { this.DragMove(); }
@@ -68,10 +102,10 @@ namespace WpfApp1
             using (RegistryKey key = Registry.LocalMachine)
             {
                 Application wordApp = new Application();
-                { 
-                Document document = wordApp.Documents.Add();
+                {
+                    Document document = wordApp.Documents.Add();
 
-                TraverseRegistry(key, document.Content);
+                    TraverseRegistry(key, document.Content);
 
                     document.SaveAs2(filePath);
                     document.Close();
@@ -96,10 +130,10 @@ namespace WpfApp1
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }          
+            }
         }
-            private void TraverseRegistry(RegistryKey key, Range parentRange)
-            {
+        private void TraverseRegistry(RegistryKey key, Range parentRange)
+        {
 
             foreach (string subKeyName in key.GetSubKeyNames())
             {
@@ -216,9 +250,11 @@ namespace WpfApp1
 
             string processorTemperature = processorInfo.GetProcessorTemperature();
             int processorPowerUsage = processorInfo.GetProcessorPowerUsage();
+            string CpuInfoRetriever = processorInfo.GetCpuSocketInformation();
 
-            lblTemperature.Content = "Processor Temperature: " + processorTemperature + "°C";
-            lblPowerUsage.Content = "Processor Power Usage: " + processorPowerUsage + "%";
+            lblTemperature.Content = "CPU Temperature: " + processorTemperature + "°C";
+            lblPowerUsage.Content = "CPU Power Usage: " + processorPowerUsage + "%";
+            lblSocketInfo.Content = CpuInfoRetriever;
         }
         private void UpdateGpuInfo()
         {
@@ -230,5 +266,29 @@ namespace WpfApp1
             lblGpuTemperature.Content = "GPU Temperature: " + gpuTemperature;
             lblGpuUtilization.Content = "GPU Utilization: " + gpuUtilization + "%";
         }
+        private void NetworkInfo()
+        {
+            NetworkInfoRetriever networkInfoRetriever = new NetworkInfoRetriever();
+
+            string pingResult = networkInfoRetriever.GetPing("www.google.com");
+            lblPingResult.Content = pingResult;
+
+            int downloadSpeedResult = networkInfoRetriever.GetMaxDownloadSpeed();
+            lblDownloadSpeedResult.Content = downloadSpeedResult + " Mbps";
+            long uploadSpeedResult = networkInfoRetriever.GetMaxUploadSpeed(); // 1MB file size
+            lblUploadSpeedResult.Content = uploadSpeedResult + " Mbps";
+
+        }
+        private void Monitor()
+        {
+            var monitorInfo = new MonitorInfo().GetMonitorInfo();
+
+            
+            txtMonitorName.Text = monitorInfo.Name;
+            txtMonitorRes.Text = monitorInfo.Resolution;
+            txtMonitorModel.Text = monitorInfo.Model;
+            
+        }
+       
     }
 }

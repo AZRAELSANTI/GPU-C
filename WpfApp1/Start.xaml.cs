@@ -11,7 +11,7 @@ namespace WpfApp1
         {
             InitializeComponent();
             dispatcherTimer.Tick += new EventHandler(MyStart);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 13);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
             dispatcherTimer.Start();
         }
         private void MyStart(object sender, EventArgs e)

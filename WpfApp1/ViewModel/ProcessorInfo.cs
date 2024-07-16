@@ -39,6 +39,18 @@ namespace WpfApp1.ViewModel
 
             return -1; 
         }
+        public string GetCpuSocketInformation()
+        {
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
+            ManagementObjectCollection cpus = searcher.Get();
+
+            foreach (ManagementObject cpu in cpus)
+            {
+                return "Socket: " + cpu["SocketDesignation"];
+            }
+
+            return "Socket: Not found";
+        }
     }
 }
 

@@ -14,13 +14,14 @@ namespace WpfApp1.ViewModel
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
             foreach (ManagementObject obj in searcher.Get())
             {
-                CpuInfo = $"{obj["Name"]}";
+                CpuInfo = $"{obj["Name"]}Cores: {obj["NumberOfCores"]}, Threads: {obj["NumberOfLogicalProcessors"]}";
+
             }
 
             searcher = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController");
             foreach (ManagementObject obj in searcher.Get())
             {
-                GpuInfo = $"{obj["Name"]}";
+                GpuInfo = $"{obj["Name"]} - Memory: {ConvertBytesToGB(obj["AdapterRAM"])} GB";
             }
         }
 
@@ -48,7 +49,7 @@ namespace WpfApp1.ViewModel
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PhysicalMemory");
             foreach (ManagementObject obj in searcher.Get())
             {
-                RamInfo += $"Capacity: {ConvertBytesToGB(obj["Capacity"])} GB - Speed: {obj["Speed"]} MHz\n";
+                RamInfo += $"{obj["Manufacturer"]} {ConvertBytesToGB(obj["Capacity"])} GB - Speed: {obj["Speed"]} MHz\n";
             }
         }
         public string OSInfo { get; set; }
@@ -68,9 +69,14 @@ namespace WpfApp1.ViewModel
             foreach (ManagementObject obj in collection)
             {
                 MotherboardInfo = $"{obj["Manufacturer"]}|{obj["Product"]}";
-                break; 
+                break;
             }
         }
-
+      
     }
 }
+
+
+
+
+
