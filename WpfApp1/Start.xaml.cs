@@ -5,7 +5,7 @@ using System.Windows.Threading;
 namespace WpfApp1
 {
     public partial class Start : Window
-    {
+    {   
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
         public Start()
         {

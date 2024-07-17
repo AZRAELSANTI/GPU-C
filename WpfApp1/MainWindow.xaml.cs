@@ -40,11 +40,6 @@ namespace WpfApp1
             NetworkInfo();
             GetGPUInfo();
             Monitor();
-
-
-
-
-
             lblGPUClockSpeed.Content = "VRAM Clock: " + ClockSpeed + "Hz";
             lblGPUMemoryClockSpeed.Content = "GPU Clock: " +MemoryClockSpeed + "Hz";
         }
