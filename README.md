@@ -1,4 +1,4 @@
-# Speccy Program github
+# GPU-C Program github
 
 Date : 27/05/2024
 
