@@ -100,30 +100,32 @@ namespace WpfApp1
             string url = "";
             if (manufacturer == "AMD")
             {
-                url = $"https://www.amd.com/en/support/graphics/";
+                url = "https://www.amd.com/en/support/graphics/";
             }
             else if (manufacturer == "NVIDIA")
             {
-                url = $"https://www.nvidia.com/Download/driverResults.aspx/226798/en-us/";
+                url = "https://www.nvidia.com/Download/index.aspx";
             }
 
             WebClient client = new WebClient();
             string htmlCode = client.DownloadString(url);
 
-            string pattern = @"(?<=Latest Driver Version:\s)(\d+\.\d+\.\d+\.\d+)";
+            string pattern = @"(?<=driverVersion[""']\s*:\s*[""'])([\d\.]+)";
             Match match = Regex.Match(htmlCode, pattern);
 
             if (match.Success)
             {
-                return match.Value;
+                return match.Groups[1].Value;
             }
             else
             {
-                return "Не удалось получить информацию о последней версии драйвера.";
+                return "Не удалось найти информацию о последней версии драйвера";
             }
         }
+
     }
 }
+
 
         
     
