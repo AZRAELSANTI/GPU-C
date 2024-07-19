@@ -1,4 +1,4 @@
-# Speccy Program github
+# GPU-C Program github
 
 Date : 27/05/2024
 
@@ -23,5 +23,5 @@ Checking for new drivers
 Open BIOS 
 
 
-https://github.com/AZRAELSANTI/Speccy-Project/assets/83638372/8227260c-20c2-4716-88cd-cb184bdf194c
+https://github.com/user-attachments/assets/3a2fbf92-a3dc-44af-8439-06abfdf0d915
 
